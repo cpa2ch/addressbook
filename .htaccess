@@ -1,0 +1,24 @@
+#Кодировка по умолчанию
+AddDefaultCharset utf-8
+
+#Скрыть(0)/Показать(1) ошибки в PHP
+#php_value display_errors 1
+
+#Основной файл с которого все грузится
+#DirectoryIndex base.php
+DirectoryIndex index.html
+
+#Грузить только те страницы на которые есть ссылки
+Options -Indexes +FollowSymLinks
+
+#Включаем модуль преобразований url
+RewriteEngine On
+
+
+
+#Все запрашиваемые файлы
+RewriteCond %{REQUEST_FILENAME} !-f
+
+#Φ#65533;скать/выдавать все страницы через основной файл index.php
+RewriteRule ^(.+)$ base.php?$1 [QSA,L]
+#RewriteBase /

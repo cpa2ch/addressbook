@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Five9 Backbone home task</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">	
+	<script data-main="js/main" src="js/libs/require.js"></script>
+</head>
+<body>
+
+	<div class="row login-form">
+		<div class="col-sm-8">
+	 		<div class="row"><br></div>
+	 		<div class="row"><br></div>
+			<div class="row">
+				<div class="col-6"></div>
+				<div class="col-6"><h1 class="main_header">Addressbook</h1>
+					
+						<div class="form-group">
+							<label for="login">Login</label>
+							<input type="text" class="form-control login-input" style="margin:10px" value="admin">
+							
+						</div>
+						<div class="form-group">
+							<label for="exampleInputPassword1">Password</label>
+							<input type="password" class="form-control password-input" style="margin:10px" value = "123456" >
+							<small id="password" class="form-text text-muted">Demo pass is 123456.</small> 
+
+						</div>
+						
+					  	<button class="btn btn-primary login" style="margin:10px">Login</button>
+						<small class="label-warning" style="color:red"></small>
+				</div>
+
+		 	</div>
+		  </div>
+		<div class="col-sm-4"></div>
+	</div> 
+
+	
+	<div class="container" style="display:none">
+		<table>
+			<tr>
+				<th><h1 class="main_header">Addressbook</h1></th>				
+			</tr>		
+		</table>
+		<table class="table">
+			<thead>
+				<tr>
+					
+					<td><input type="text" class="form-control number1-input" ></td>
+					<td><input type="text" class="form-control firstname-input "></td>
+					<td><input type="text" class="form-control lastname-input "></td>
+					<td><button class="btn btn-primary add-user">Add</button></td>
+
+				</tr>
+				<tr>
+					<td><input type="text" class="form-control number1-filter" ></td>
+					<td><input type="text" class="form-control firstname-filter "></td>
+					<td><input type="text" class="form-control lastname-filter "></td>
+					<td><button class="btn btn-success filter-user">Filter</button>
+					<button class="btn btn-success clear-filter">Clear Filter</button>
+				</tr>
+				<tr>
+					<td class="navigation">	</td>
+					<td><button class="btn btn-primary clear-filter restore">Restore Adressbook from server</button></td>					
+				</tr>
+				<tr>
+					<th data-sort="number1">Number1 (click to sort)</th>
+					<th >First Name</th>
+					<th >Last Name</th>
+				</tr>
+			</thead>
+			<tbody class="user-list"></tbody>			
+		</table>
+
+	</div>
+
+	<script type="text/template" class="users-template">
+		<td><span class="number1"><%= number1 %></span></td>
+		<td><span class="firstname"><%= firstname %></span></td>
+		<td><span class="lastname"><%= lastname %></span></td>
+		<td><button class="btn btn-warning edit-user">Edit</button> <button class="btn btn-danger delete-user">Delete</button><button class="btn btn-success update-user" style="display:none">Update</button> <button class="btn btn-danger cancel" style="display:none">Cancel</button></td>
+
+	</script>
+	
+
+
+</body>
+</html>
