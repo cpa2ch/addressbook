@@ -263,28 +263,31 @@ var usersView = new UsersView();
     $('.login').on('click', function(){
         console.log("login");
 
-        $.ajaxSetup({async:false});
+        //$.ajaxSetup({async:false});
         var login = {login:$('.login-input').val(),pass:$('.password-input').val()};
        
 
-        var loginStatus = $.post('login', {data:JSON.stringify(login)}, function (data, status){                    
-                }).responseText;
+        var loginStatus = '';
+        $.post('login', {data:JSON.stringify(login)}, function (loginStatus, status){})
+                .done(function(loginStatus){
 
-        if (loginStatus === "access") {
-            post = $.post('getdump', {data:""}, function (data, status){
-                    $.ajaxSetup({async:true});                   
-                }).responseText;
+                    console.log("loginStatus is:", loginStatus);
+                    if (loginStatus == "access"){
+                        $.post('getdump', {data:""}, function (dump, status){})
+                            .done(function (dump){
+                                users.set(JSON.parse(dump));  
+                                $('.container').show();
+                                $('.login-form').hide();
+                            });
+                    }
+                    else {
+                        $('.container').hide();
+                        $('.login-form').show();      
+                        $('.label-warning').html('Incorrect login or passowrd');
+                    }
+                });
 
-
-            users.set(JSON.parse(post));  
-            $('.container').show();
-            $('.login-form').hide();
-
-        } else {
-            $('.container').hide();
-            $('.login-form').show();      
-            $('.label-warning').html('Incorrect login or passowrd'); 
-        }  
+ 
 
             
         });
@@ -316,18 +319,19 @@ var usersView = new UsersView();
      }   
         
     });
-    $('.restore').on('click', function(){
+    $('.restore').on('click',  function(){
+        //Обновление UI почему то срабатывает только со повторного клика по кнопке.
+        //
+        //$.post('restore', {data:""}).done(function(data) {users.reset(JSON.parse(data));})
+        //
+        // Поэтому загрузку данных сделал вот так... ((
+        
         $.ajaxSetup({async:false});
-        var restoreData = $.post('restore', {data:""}, function (data, status){
-            $.ajaxSetup({async:true});
-            if (status == "success"){                               
-            }
-            else {
-                alert ("Can't download DB dump");
-            
-            }
-        }).responseText;
-        users.reset(JSON.parse(restoreData));
+        $.post('restore', {data:""}, function (data, status){
+             $.ajaxSetup({async:true});
+             users.reset(JSON.parse(data));                       
+         })
+        
     });
   }
 
