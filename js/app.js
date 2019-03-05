@@ -269,9 +269,7 @@ var usersView = new UsersView();
 
         var loginStatus = '';
         $.post('login', {data:JSON.stringify(login)}, function (loginStatus, status){})
-                .done(function(loginStatus){
-
-                    console.log("loginStatus is:", loginStatus);
+                .done(function(loginStatus){                    
                     if (loginStatus == "access"){
                         $.post('getdump', {data:""}, function (dump, status){})
                             .done(function (dump){
@@ -286,9 +284,6 @@ var usersView = new UsersView();
                         $('.label-warning').html('Incorrect login or passowrd');
                     }
                 });
-
- 
-
             
         });
 
@@ -304,7 +299,7 @@ var usersView = new UsersView();
             if (status == "success" && data == "added"){
                 var user = new User(val);
                 users.add(user);
-                //console.log(user.toJSON());
+                
             }
             else {
                 alert ("Can't add new record to")
@@ -319,17 +314,9 @@ var usersView = new UsersView();
      }   
         
     });
-    $('.restore').on('click',  function(){
-        //Обновление UI почему то срабатывает только со повторного клика по кнопке.
-        //
-        //$.post('restore', {data:""}).done(function(data) {users.reset(JSON.parse(data));})
-        //
-        // Поэтому загрузку данных сделал вот так... ((
-        
-        $.ajaxSetup({async:false});
-        $.post('restore', {data:""}, function (data, status){
-             $.ajaxSetup({async:true});
-             users.reset(JSON.parse(data));                       
+    $('.restore').on('click',  function(){        
+        $.post('restore', {data:""}).done(function(data){
+            users.set(JSON.parse(data));                     
          })
         
     });
