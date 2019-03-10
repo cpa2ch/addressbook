@@ -260,66 +260,74 @@ var usersView = new UsersView();
 
 
 
-    $('.login').on('click', function(){
-        console.log("login");
+$('.login').on('click', function() {
+    console.log("login");
 
-        //$.ajaxSetup({async:false});
-        var login = {login:$('.login-input').val(),pass:$('.password-input').val()};
-       
-
-        var loginStatus = '';
-        $.post('login', {data:JSON.stringify(login)}, function (loginStatus, status){})
-                .done(function(loginStatus){                    
-                    if (loginStatus == "access"){
-                        $.post('getdump', {data:""}, function (dump, status){})
-                            .done(function (dump){
-                                users.set(JSON.parse(dump));  
-                                $('.container').show();
-                                $('.login-form').hide();
-                            });
-                    }
-                    else {
-                        $('.container').hide();
-                        $('.login-form').show();      
-                        $('.label-warning').html('Incorrect login or passowrd');
-                    }
-                });
-            
-        });
+    //$.ajaxSetup({async:false});
+    var login = {
+        login: $('.login-input').val(),
+        pass: $('.password-input').val()
+    };
 
 
-    $('.add-user').on('click', function(){
-        if ($('.number1-input').val() !== ""){
-        var val = {
-            number1: $('.number1-input').val(),
-            firstname: $('.firstname-input').val(),
-            lastname: $('.lastname-input').val(),
-        };
-        $.post('add', {data:JSON.stringify(val)}, function (data, status){
-            if (status == "success" && data == "added"){
-                var user = new User(val);
-                users.add(user);
-                
+    //var loginStatus = '';
+    $.post('login', {
+            data: JSON.stringify(login)
+        }, function(loginStatus, status) {})
+        .done(function(loginStatus) {
+            if (loginStatus == "access") {
+                $.post('getdump', {
+                        data: ""
+                    }, function(dump, status) {})
+                    .done(function(dump) {
+                        users.set(JSON.parse(dump));
+                        $('.container').show();
+                        $('.login-form').hide();
+                    });
+            } else {
+                $('.container').hide();
+                $('.login-form').show();
+                $('.label-warning').html('Incorrect login or passowrd');
             }
-            else {
-                alert ("Can't add new record to")
-            }
+        })
+        .done(function() {
+            $('.add-user').on('click', function() {
+                if ($('.number1-input').val() !== "") {
+                    var val = {
+                        number1: $('.number1-input').val(),
+                        firstname: $('.firstname-input').val(),
+                        lastname: $('.lastname-input').val(),
+                    };
+                    $.post('add', {
+                        data: JSON.stringify(val)
+                    }, function(data, status) {
+                        if (status == "success" && data == "added") {
+                            var user = new User(val);
+                            users.add(user);
+
+                        } else {
+                            alert("Can't add new record to")
+                        }
+                    });
+
+                    $('.number1-input').val("");
+                    $('.firstname-input').val("");
+                    $('.lastname-input').val("");
+                } else {
+                    alert("Enter at least Number1");
+                }
+
+            });
+
+            $('.restore').on('click', function() {
+                $.post('restore', {
+                    data: ""
+                }).done(function(data) {
+                    users.set(JSON.parse(data));
+                })
+            });
         });
-        
-        $('.number1-input').val("");
-        $('.firstname-input').val("");
-        $('.lastname-input').val("");
-     } else {
-        alert("Enter at least Number1");
-     }   
-        
-    });
-    $('.restore').on('click',  function(){        
-        $.post('restore', {data:""}).done(function(data){
-            users.set(JSON.parse(data));                     
-         })
-        
-    });
+});   
   }
 
   return {
